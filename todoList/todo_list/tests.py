@@ -53,3 +53,18 @@ class TodoTests(TestCase):
         self.assertTrue('hacer un to-do list' in tasks)
         self.assertTrue('hacer otra to-do list' in tasks)
         self.assertTrue('hacer una to-do list mas' in tasks)
+        
+    def test_mark_task_as_done(self):
+        #given
+        todo = TodoList()
+        todo.add_task('hacer un to-do list')
+        todo.add_task('hacer otra to-do list')
+        todo.add_task('hacer una to-do list mas')
+        
+        # when
+        todo.mark_as_done('hacer un to-do list')
+        
+        # then
+        self.assertTrue(False)
+        
+        
