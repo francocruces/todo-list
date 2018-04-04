@@ -1,5 +1,5 @@
 from django.test import TestCase
-from todo_list.models import TodoList
+from todo_list.models import TodoList, Task
 
 # Create your tests here.
 class TodoTests(TestCase):
@@ -16,37 +16,44 @@ class TodoTests(TestCase):
     def test_add_task(self):
         # given
         todo = TodoList()
+        task = Task('hacer un to-do list')
         
         # when
-        todo.add_task('hacer un to-do list')
+        todo.add_task(task)
         
         # then
         self.assertFalse(todo.is_empty())
-        self.assertTrue('hacer un to-do list' in todo.get_tasks())
+        self.assertTrue(todo.contains(task))
         
     def test_add_many_tasks(self):
         # given
         todo = TodoList()
-        todo.add_task('hacer un to-do list')
+        task = Task('hacer un to-do list')
+        task2 = Task('hacer otra to-do list')
+        task3 = Task('hacer una to-do list mas')
+        todo.add_task(task)
         
         # when
-        todo.add_task('hacer otra to-do list')
-        todo.add_task('hacer una to-do list mas')
+        todo.add_task(task2)
+        todo.add_task(task3)
         
         # then
         self.assertFalse(todo.is_empty())
-        self.assertTrue('hacer otra to-do list' in todo.get_tasks())
-        self.assertTrue('hacer una to-do list mas' in todo.get_tasks())
+        self.assertTrue(todo.contains(task2))
+        self.assertTrue(todo.contains(task3))
         
     def test_list_tasks(self):
         # given
         todo = TodoList()
-        todo.add_task('hacer un to-do list')
-        todo.add_task('hacer otra to-do list')
-        todo.add_task('hacer una to-do list mas')
+        task = Task('hacer un to-do list')
+        task2 = Task('hacer otra to-do list')
+        task3 = Task('hacer una to-do list mas')
+        todo.add_task(task)
+        todo.add_task(task2)
+        todo.add_task(task3)
         
         # when
-        tasks = todo.get_tasks()
+        tasks = todo.list_tasks()
         
         # then 
         self.assertEquals(3, len(tasks))
@@ -55,16 +62,30 @@ class TodoTests(TestCase):
         self.assertTrue('hacer una to-do list mas' in tasks)
         
     def test_mark_task_as_done(self):
-        #given
+        # given
         todo = TodoList()
-        todo.add_task('hacer un to-do list')
-        todo.add_task('hacer otra to-do list')
-        todo.add_task('hacer una to-do list mas')
+        task = Task('hacer un to-do list')
+        task2 = Task('hacer otra to-do list')
+        task3 = Task('hacer una to-do list mas')
+        todo.add_task(task)
+        todo.add_task(task2)
+        todo.add_task(task3)
         
         # when
         todo.mark_as_done('hacer un to-do list')
         
         # then
-        self.assertTrue(False)
+        self.assertTrue(task.is_done())
+        
+    def test_create_task(self):
+        # given
+        
+        # when
+        task = Task('hacer una todo list')
+        
+        # then
+        self.assertEqual(task.get_description(), 'hacer una todo list')
+        self.assertFalse(task.is_done())
+        
         
         
