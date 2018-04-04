@@ -19,7 +19,10 @@ class Task(models.Model):
         
     def mark_as_done(self):
         self.done = True
-        
+    
+    def change_description(self, new_description):
+        self.description = new_description
+    
 class TodoList(models.Model):
     
     def __init__(self):
@@ -34,9 +37,9 @@ class TodoList(models.Model):
     def add_task(self, a_task):
         self.tasks.append(a_task)
         
-    def contains(self, task):
+    def contains(self, task_description):
         for t in self.tasks:
-            if t.get_description() == task.get_description():
+            if t.get_description() == task_description:
                 return True
         return False
     
@@ -51,3 +54,10 @@ class TodoList(models.Model):
         for t in self.tasks:
             if t.get_description() == description:
                 t.mark_as_done()
+                break
+    
+    def edit_task(self, old_description, new_description):
+        for t in self.tasks:
+            if t.get_description() == old_description:
+                t.change_description(new_description)
+                break

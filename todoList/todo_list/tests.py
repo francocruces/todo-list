@@ -23,7 +23,7 @@ class TodoTests(TestCase):
         
         # then
         self.assertFalse(todo.is_empty())
-        self.assertTrue(todo.contains(task))
+        self.assertTrue(todo.contains(task.get_description()))
         
     def test_add_many_tasks(self):
         # given
@@ -39,8 +39,8 @@ class TodoTests(TestCase):
         
         # then
         self.assertFalse(todo.is_empty())
-        self.assertTrue(todo.contains(task2))
-        self.assertTrue(todo.contains(task3))
+        self.assertTrue(todo.contains(task2.get_description()))
+        self.assertTrue(todo.contains(task3.get_description()))
         
     def test_list_tasks(self):
         # given
@@ -60,6 +60,18 @@ class TodoTests(TestCase):
         self.assertTrue('hacer un to-do list' in tasks)
         self.assertTrue('hacer otra to-do list' in tasks)
         self.assertTrue('hacer una to-do list mas' in tasks)
+        
+    def test_edit_task(self):
+        # given
+        todo = TodoList()
+        task = Task('hacer un to-do list')
+        todo.add_task(task)
+        
+        # when
+        todo.edit_task('hacer un to-do list', 'new description')
+        # then
+        self.assertTrue(todo.contains('new description'))
+        self.assertFalse(todo.contains('hacer un to-do list'))
         
     def test_mark_task_as_done(self):
         # given
